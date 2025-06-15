@@ -28,9 +28,7 @@ namespace WebAPIByAI.Controllers
         }
 
 
-
-        //
-        [HttpPost("register")]
+        [HttpPost(template: "register")]
         public IActionResult Register([FromBody] RegisterModel model)
         {
             var user = new User { Username = model.Username };
@@ -64,12 +62,8 @@ namespace WebAPIByAI.Controllers
                 refreshToken = refreshToken.Token
             });
         }
-        //
-
-
-
-
-        [HttpPost("login")]
+  
+        [HttpPost(template: "login")]
         public IActionResult Login([FromBody] LoginModel model)
         {
             var user = _userService.Authenticate(model.Username, model.Password);
@@ -110,7 +104,7 @@ namespace WebAPIByAI.Controllers
             });
         }
 
-        [HttpPost("refresh")]
+        [HttpPost(template: "refresh")]
         public IActionResult RefreshToken([FromBody] string refreshToken)
         {
             var storedToken = _refreshService.GetRefreshToken(refreshToken);
@@ -119,7 +113,7 @@ namespace WebAPIByAI.Controllers
 
             var user = storedToken.User;
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("JwtSettings").GetSection("Key").Value);
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection(key: "JwtSettings").GetSection("Key").Value);
 
             //var key = Encoding.ASCII.GetBytes("SuperSecretKey@3456789012345678901234");
 
